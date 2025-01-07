@@ -33,9 +33,8 @@ class CustomJWTAuthentication(BaseAuthentication):
     @staticmethod
     def generate_token(user):
         payload = {
-            'user_id': user.id,
+            'id': str(user.id),
             'isActive': user.isActive,
-            'role': user.role,
             'exp': datetime.utcnow() + timedelta(days=1),
             'iat': datetime.utcnow(),
         }

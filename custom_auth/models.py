@@ -17,4 +17,5 @@ class User(models.Model):
     
     class Meta:
         db_table= "Users"
-
+    def __str__(self):
+        return f"{self.name} ({self.email})"
