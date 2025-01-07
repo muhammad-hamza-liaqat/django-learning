@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password, check_password
 from custom_auth.serializers import SignUpSerializer, LoginSerializer
-from custom_auth.models import User
+from django.contrib.auth.models import User
 from rest_framework import status
 from custom_auth.authentication import CustomJWTAuthentication
 
@@ -17,9 +17,11 @@ class SignUpView(APIView):
         hashed_password = make_password(validated_data["password"])
 
         user = User.objects.create(
-            name=validated_data["name"],
+            username=validated_data["username"],
             email=validated_data["email"],
             password=hashed_password,
+            first_name = validated_data["first_name"],
+            last_name = validated_data["last_name"]
         )
 
         return Response({

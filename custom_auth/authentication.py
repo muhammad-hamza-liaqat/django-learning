@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
-from .models import User
+from django.contrib.auth.models import User
 
 
 class CustomJWTAuthentication(BaseAuthentication):
@@ -25,7 +25,7 @@ class CustomJWTAuthentication(BaseAuthentication):
         except Exception:
             raise AuthenticationFailed('User not found')
 
-        if not user.isActive:
+        if not user.is_active:
             raise AuthenticationFailed('User account is inactive')
 
         return (user, None)
@@ -34,7 +34,9 @@ class CustomJWTAuthentication(BaseAuthentication):
     def generate_token(user):
         payload = {
             'id': str(user.id),
-            'isActive': user.isActive,
+            'isActive': user.is_active,
+            'first_name': user.first_name,
+            'isSuperUser': user.is_superuser,
             'exp': datetime.utcnow() + timedelta(days=1),
             'iat': datetime.utcnow(),
         }
